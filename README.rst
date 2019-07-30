@@ -1,7 +1,7 @@
 .. image:: https://img.shields.io/badge/dmtn--087-lsst.io-brightgreen.svg
    :target: https://dmtn-087.lsst.io
-.. image:: https://travis-ci.org/lsst-dm/dmtn-087.svg
-   :target: https://travis-ci.org/lsst-dm/dmtn-087
+.. image:: https://travis-ci.com/lsst-dm/dmtn-087.svg
+   :target: https://travis-ci.com/lsst-dm/dmtn-087
 
 ###################################################################
 Proposed Modifications to Solar System Processing and Data Products
