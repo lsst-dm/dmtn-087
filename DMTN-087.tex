@@ -207,7 +207,7 @@ To facilitate the determination of biases the LSST will, as a part of DRP, compu
 
 \subsection{Linking Algorithm}
 
-A new tracklet linking algorithm, HelioLINC, has recently been published and demonstrated by \cite{heliolinc}. This algorithm brings significant (>10x) computational improvements over the present baseline, as well as being conceptually simpler.
+A new tracklet linking algorithm, HelioLINC, has recently been published and demonstrated by \cite{2018AJ....156..135H}. This algorithm brings significant (>10x) computational improvements over the present baseline, as well as being conceptually simpler.
 
 We have analyzed its linking performance. We find that present day implementation (\url{https://github.com/pytrax/pytrax}) is already able to link $> 90$\% of non-NEO objects and $> 70$\% of NEOs in a simulate 3-month LSST survey. Technical analysis of possible improvements indicates that with additional development (budgeted in this change request) this codebase can be updated to meet LSST requirements ($95$\% linking efficiency). The computational performance is approximately $10$x over the present LSST MOPS prototypes.
 
@@ -290,7 +290,7 @@ LDM-151 has been updated to:
 
 \subsection{LDM-156: Moving Object Pipeline System Design}
 
-Having adopted HelioLINC as the algorithm, this document is to be taken out of the official baseline and kept for historical documentation. It is superseded by Section~3.5 of LDM-151 and the \cite{heliolinc} paper.
+Having adopted HelioLINC as the algorithm, this document is to be taken out of the official baseline and kept for historical documentation. It is superseded by Section~3.5 of LDM-151 and the \cite{2018AJ....156..135H} paper.
 
 \subsection{Annual Milestones}
 
@@ -318,6 +318,6 @@ The implementation of this change request will incorporate the above milestones 
 
 A Memorandum of Understanding has been developed by the Minor Planet Center and the LSST wherein both parties commit to working to realize the smooth operation of the LSST Solar System Processing as described in Section~\ref{sec:promptSSP}.
 
-\bibliography{lsst,lsst-dm,refs_ads,refs,books,dmtn087}
+\bibliography{lsst,lsst-dm,refs_ads,refs,books}
 
 \end{document}
