@@ -52,7 +52,7 @@ A high-level presentation of proposed changes to Solar System processing and dat
 
 \section{Introduction}
 
-Taking the inventory of the Solar System is one of the four main science themes that the LSST is designed to enable. As \cite{2008arXiv0805.2366I} discuss:
+Taking the inventory of the Solar System is one of the four main science themes that LSST is designed to enable. As \cite{2008arXiv0805.2366I} discuss:
 
 \begin{quotation}
 The small bodies of the Solar System, such as main belt
@@ -151,7 +151,7 @@ Instead, in Section~\ref{sec:new}, we will present potential modifications to th
 
 The present development plan assumed full engagement on MOPS construction starting in 2017. As hiring in this area is difficult, the actual work lagged relative to the plan.
 
-It's unlikely we could restore this schedule by adding significantly more people at this phase of the project\footnote{This is commonly known as Brook's Law: ``adding human resources to a late software project makes it later'' (Brooks, 1975)}. A better strategy may be to re-examine the work to be done, with a goal of simplifying the design while retaining most (or all) of the scope (while continuing to make well-suited hires, if possible). We discuss such a proposal in Section~\ref{sec:new}.
+It's unlikely we could restore this schedule by adding significantly more people at this phase of the project\footnote{This is commonly known as Brooks' Law: ``adding human resources to a late software project makes it later'' \citep{1982mmme.book.....B}}. A better strategy may be to re-examine the work to be done, with a goal of simplifying the design while retaining most (or all) of the scope (while continuing to make well-suited hires, if possible). We discuss such a proposal in Section~\ref{sec:new}.
 
 \subsection{Operational Considerations}
 
@@ -165,12 +165,12 @@ The issues described in the previous section point to serious obstacles to an on
 
 \subsection{Processing Workflow\label{sec:promptSSP}}
 
-Before looking at LSST, it is instructive to sketch out how analogous present-day asteroid surveys operate. We take the example of a typical night in PanSTARRS: i) observations are taken, ii) known objects are flagged by comparing detections to external catalogs (MPCORB), iii) tracklets are constructed by PS1-MOPS, iv) likely asteroids are submitted to the Minor Planet Center (MPC), v) the Minor Planet Center confirms the detections and (where possible) computes and publishes orbits in time for the next night of observing. 
+Before looking at LSST, it is instructive to sketch out how analogous present-day asteroid surveys operate. We take the example of a typical night in PanSTARRS: i) observations are taken, ii) known objects are flagged by comparing detections to external catalogs (MPCORB), iii) tracklets are constructed by PS1-MOPS, iv) likely asteroids are submitted to the Minor Planet Center (MPC), v) the Minor Planet Center confirms the detections and (where possible) computes and publishes orbits in time for the next night of observing.
 Comparing this workflow to Figure~\ref{fig:productionNow}, we see that this closely follows the model adopted by LSST. The major difference is that all the steps in the LSST processing are performed in-house, whereas PS1 relies on the Minor Planet Center.
 
-The Minor Planet Center\footnote{\url{https://www.minorplanetcenter.net/iau/mpc.html}} (MPC) operates at the Smithsonian Astrophysical Observatory (SAO), under the auspices of Division F of the International Astronomical Union (IAU). The MPC is responsible for the designation of minor bodies in the solar system: minor planets; comets; and natural satellites. They are also responsible for the efficient collection, computation, checking and dissemination of astrometric observations and orbits for minor planets and comets, via its various journals. The MPC was founded at the University of Cincinnati in 1947, and has been operating at the SAO since 1978. Reporting small body discoveries to the MPC, who construct and curate the resulting orbit catalogs, has been an established community practice at least since the $\sim$1970ies.
+The Minor Planet Center\footnote{\url{https://www.minorplanetcenter.net/iau/mpc.html}} (MPC) operates at the Smithsonian Astrophysical Observatory (SAO), under the auspices of Division F of the International Astronomical Union (IAU). The MPC is responsible for the designation of minor bodies in the solar system: minor planets; comets; and natural satellites. They are also responsible for the efficient collection, computation, checking and dissemination of astrometric observations and orbits for minor planets and comets, via its various journals. The MPC was founded at the University of Cincinnati in 1947, and has been operating at the SAO since 1978. Reporting small body discoveries to the MPC, who construct and curate the resulting orbit catalogs, has been an established community practice at least since the $\sim$1970s.
 
-The rationale for LSST not utilizing MPC services are largely historical. When the LSST was originally envisioned, the Minor Planet Center infrastructure was not going to scale to the sheer volume of data the LSST was predicted to produce\footnote{The LSST was originally designed to begin operating in early 2010's.}. Furthermore, keeping full control over all aspects of the processing minimized operational risk.
+The rationale for LSST not utilizing MPC services are largely historical. When LSST was originally envisioned, the Minor Planet Center infrastructure was not going to scale to the sheer volume of data LSST was predicted to produce\footnote{LSST was originally designed to begin operating in early 2010s.}. Furthermore, keeping full control over all aspects of the processing minimized operational risk.
 
 The LSST start date has shifted by a $\sim$decade since these original designs. In this time, the predicted data volumes for LSST have stayed the same, while the generally available computing capabilities have increased. The MPC has demonstrated the ability to scale with the growth of the community (e.g., it successfully handles PanSTARRS PS1 data). Today, the MPC routinely manages a database of $\sim 750,000$ orbits, only a factor of $\sim 7$ relative to what is expected for end-of-mission LSST.
 
@@ -187,13 +187,13 @@ The specific method that LSST adopted for discovery and linking of solar system 
 	\includegraphics[page=2,width=1.0\textwidth]{figures/processing.pdf}
 \end{figure}
 
-The second step -- construction and maintenance of the orbit catalog -- is an example of ``bread and butter'' operation that the MPC specializes in. If the LSST delivered a list of already linked tracklets, the MPC has the software, staff,  processes, and capabilities to ingest them, verify the linkage, add them to the orbit database, and perform all the typical curation activities. Assuming MPC services are used for this step, the resulting daily cycle is presented in Figure~\ref{fig:productionNew}.
+The second step -- construction and maintenance of the orbit catalog -- is an example of ``bread and butter'' operation that the MPC specializes in. If LSST delivered a list of already linked tracklets, the MPC has the software, staff,  processes, and capabilities to ingest them, verify the linkage, add them to the orbit database, and perform all the typical curation activities. Assuming MPC services are used for this step, the resulting daily cycle is presented in Figure~\ref{fig:productionNew}.
 
-By switching to the scheme presented in Figure~\ref{fig:productionNew}, the newly discovered high-confidence tracks would now be submitted to the MPC for inclusion into the central orbit database they maintain and regularly curate. Following incorporation of nightly data received from the LSST and other surveys, the MPC would publish an updated orbit catalog in time for the next night of LSST observing. The LSST would download the published catalog, and use it for attribution of known objects in the following night.
+By switching to the scheme presented in Figure~\ref{fig:productionNew}, the newly discovered high-confidence tracks would now be submitted to the MPC for inclusion into the central orbit database they maintain and regularly curate. Following incorporation of nightly data received from LSST and other surveys, the MPC would publish an updated orbit catalog in time for the next night of LSST observing. LSST would download the published catalog, and use it for attribution of known objects in the following night.
 
 \subsection{Data Products}
 
-From the data products point of view, the change can be viewed as having an SSObject table divided into two parts: dynamical and physical characteristics. The dynamical characteristics (orbital elements) would now be computed by the Minor Planet Center (the "MPCORB" catalog); the LSST would ingest a new copy of the MPCORB every evening. We note that this means that {\bf the orbits in the ingested catalog will be computed using not only LSST observations, but also other observations the MPC has access to}. The biases, selection function, and the quality of orbits in the catalog will therefore be complicated, making this catalog unsuitable for population studies. The DRP catalogs (see below) should be used for this purpose.
+From the data products point of view, the change can be viewed as having an SSObject table divided into two parts: dynamical and physical characteristics. The dynamical characteristics (orbital elements) would now be computed by the Minor Planet Center (the "MPCORB" catalog); LSST would ingest a new copy of the MPCORB every evening. We note that this means that {\bf the orbits in the ingested catalog will be computed using not only LSST observations, but also other observations the MPC has access to}. The biases, selection function, and the quality of orbits in the catalog will therefore be complicated, making this catalog unsuitable for population studies. The DRP catalogs (see below) should be used for this purpose.
 
 Given that information, the physical characteristics such as absolute magnitudes would still be computed by LSST (also on a nightly basis, forming tne updated SSObject table). This is schematically illustrated in Figure~\ref{fig:productsComparison}.
 
@@ -203,7 +203,7 @@ Given that information, the physical characteristics such as absolute magnitudes
 	\includegraphics[page=3,width=0.8\textwidth]{figures/processing.pdf}
 \end{figure}
 
-To facilitate the determination of biases the LSST will, as a part of DRP, compute an orbit catalog and the table of physical properties using LSST observations only and utilizing one, well-characterized, version of the Solar System Processing pipeline. This products is designed to enable population studies based on objects discovered by the LSST.
+To facilitate the determination of biases LSST will, as a part of DRP, compute an orbit catalog and the table of physical properties using LSST observations only and utilizing one, well-characterized, version of the Solar System Processing pipeline. This products is designed to enable population studies based on objects discovered by LSST.
 
 \subsection{Linking Algorithm}
 
@@ -223,7 +223,7 @@ Our analysis and feedback from the LSST Solar System Science Collaboration indic
 \item As MPCORB includes not only LSST information, but other surveys as well, the orbit catalog used for association is now maximally complete at all times. This also automatically satisfies DMS-REQ-0288 ("Use of External Orbit Catalogs").
 \item There is now only one catalog now (a opposed to having an LSST-specific orbit catalog). This solves the non-trivial cross-match problem, simplifies bookkeeping, and reduces community confusion.
 \item For the community that already works with the MPC databases, there will be no need to do anything special to take advantage of LSST data (as it will already be included). This makes the LSST measurements significantly more accessible and useful.
-\item This change places the LSST into a more general (and already largely existing) framework of how asteroid surveys operate
+\item This change places LSST into a more general (and already largely existing) framework of how asteroid surveys operate
 world-wide
 \item The change would open the possibility to submit all tracklets to the MPC, including trails
 \item The change would enable future cross-survey linking either at MPC or by a third party. For example, LSST’s first tracklet may complete a track that some other survey has started nights before. This increases the overall object discovery yields.
@@ -312,11 +312,11 @@ Having adopted HelioLINC as the algorithm, this document is to be taken out of t
 		\hline
 	\end{tabular}
 
-The implementation of this change request will incorporate the above milestones into the LSST's integrated PMCS. The plans will be refined on a cycle-by-cycle basis, consistent with usual LSST-DM practice. A more detailed notional schedule is kept locally in a PMCS tool.
+The implementation of this change request will incorporate the above milestones into LSST's integrated PMCS. The plans will be refined on a cycle-by-cycle basis, consistent with usual LSST-DM practice. A more detailed notional schedule is kept locally in a PMCS tool.
 
 \subsection{Supplementary Documentation}
 
-A Memorandum of Understanding has been developed by the Minor Planet Center and the LSST wherein both parties commit to working to realize the smooth operation of the LSST Solar System Processing as described in Section~\ref{sec:promptSSP}.
+A Memorandum of Understanding has been developed by the Minor Planet Center and LSST wherein both parties commit to working to realize the smooth operation of the LSST Solar System Processing as described in Section~\ref{sec:promptSSP}.
 
 \bibliography{lsst,lsst-dm,refs_ads,refs,books}
 
