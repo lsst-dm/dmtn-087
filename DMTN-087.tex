@@ -235,15 +235,21 @@ On the negative side, not having an LSST-only nightly catalog diminishes its val
 
 We estimate that with this change the construction scope of prompt Solar System processing can be executed with the presently hired staff in time for the beginning of operations. We estimate the DRP elements will be possible to construct in the same time-frame {\em assuming no significant changes are needed to prompt processing elements as a result of feedback from commissioning.}
 
-A secondary positive effect is that MOPS remains the only complex Solar System-specific pipeline to be developed. The work required on MOPS matches closely the expertise available on-project. Utilization of the next-generation HelioLINC algorithm and its {\tt pytrax} implementation reduces the computational risk further.
+A secondary positive effect is that MOPS remains the most complex Solar System-specific pipeline to be developed, in addition to the Solar System-specific spatially indexed internal database. The work required on MOPS matches closely the expertise available on-project. Utilization of the next-generation HelioLINC algorithm and its {\tt pytrax} implementation reduces the computational risk further.
 
 \subsection{Operational Impacts}
 
-Operationally, this change significantly reduces the daily operational complexity, as all catalog maintenance now resides at the Minor Planet Center. It brings the remaining tasks (characterization of Data Release catalogs) closer to what has been budgeted for operations. It will still requires some operational expertize in the area of the Solar System, but at a fractional FTE level.
+Operationally, this change significantly reduces the daily operational complexity, as all catalog maintenance now resides at the Minor Planet Center. It brings the remaining tasks (characterization of Data Release catalogs) closer to what has been budgeted for operations. It will still requires some operational expertize in the area of the Solar System, but at a reduced FTE level.
 
 \subsection{Risks}
 
-The introduction of a partner into daily workflow brings along a degree of third-party operational risk. On the other hand, if the analysis presented in Section~\ref{sec:schedule} is correct, the schedule risk with the present baseline is already quite serious.
+The introduction of a partner into daily workflow brings along a degree of third-party operational risk. We've identified two specific (and correlated) risks: i) present management and technology evolution challenges at the MPC, and ii) the MPC scaling up approximately 10x to be able to intake the daily LSST volume.
+
+The first risk is related to MPCs migration from legacy VMS systems and largely manual processes, to UNIX systems with a high degree of process automation. The MPC is also increasing their staff by about $\sim 2x$ and professionalizing internal business processes along the way. This has not been without challenges. The migration has taken longer than expected and was executed earlier than optimal. On June 10th 2019., a disk failure on a machine that handles several observation processing pipelines caused suspension of normal operations for approximately six days, and forced a somewhat premature switch to the new Linux based system. The switch caused a number of subsequent smaller issues, the major of which were corrected within a week, with a long tail of smaller problems persisting over the subsequent three months\footnote{\url{https://minorplanetcenter.net/iau/MPCStatus.html}}. An event like this in LSST operation would not be disastrous, but would generate additional LSST staff workload to implement mitigation procedures and monitor for subsequent issues. We've been continuously monitoring the MPC's response and lessons learned, and have offered advice and assistance in areas where the LSST SSP's expertise could help.
+
+The work on scaling up the MPC systems to LSST data rates has been partially delayed due to the extended Linux migration and handling of the disk crash crisis. Nevertheless, there has been progress. For example, the MPC has demonstrated code capable of orbit computations on $O(1M)$ objects with just a few -hours of computational effort, albeit with a still too high rate of cases requiring manual intervention. Furthermore, the database migration (which should allow for larger workloads) is expected to complete by March 2020. Overall, the work will continue through 2020-2021 in order to be ready for LSST in 2022. We plan to monitor the MPC developments closely, and continuously evaluate the level of this risk.
+
+Nevertheless, if the analysis presented in Section~\ref{sec:schedule} is correct the schedule risk within the present baseline is already quite serious. The change to incorporate the MPC into our baseline -- notwithstanding the issues discussed above -- would still reduce it.
 
 \section{New and Changed Documents}
 
@@ -254,14 +260,16 @@ The DPDD has been updated to:
 \item Reflect the new workflow where candidate discoveries are sent to the Minor Planet Center, and the orbit catalog is now downloaded from the Minor Planet Center on a daily basis.
 \item Deprecate the usage of the term ``MOPS'' (Moving Object Processing System), in favor of the more accurate and less confusing term Solar System Processing. In the community, MOPS is widely understood to be one specific implementation of the asteroid linking algorithm, which we will stop using after this change request is adopted. Secondly, linking (which MOPS refers to) is a subset of the overall processing required for Solar System objects.
 \item State that the Data Release products will consist of two elements: the reprocessed prompt processing data products, but also a special Solar System object catalog constructed from LSST observations only (to enable population debiasing and studies).
-\item Update the high-level table schemas for Solar System data products.
+\item Update and increase the level of detail provided by the high-level table schemas for Solar System data products. These \LaTeX{} versions are now auto-generated from the human-readable spreadsheets maintained at \url{http://ls.st/j7f}.
 \end{itemize}
 
-The high-level table schemas in the DPDD have been updated consistent with Figure~\ref{fig:productsComparison} to explicitly call for three tables related to Solar System objects: the MPCORB table (with orbits received from the MPC), the SSObject table (with physical quantities computed from LSST objservations), and SSSource tables (with per-observation quantities).
+The table schemas in the DPDD have been updated consistent with Figure~\ref{fig:productsComparison} to explicitly call for three tables related to Solar System objects: the MPCORB table (with orbits received from the MPC), the SSObject table (with physical quantities computed from LSST objservations), and SSSource tables (with per-observation quantities).
 
 \subsection{Database Schemas}
 
-Based on the high-level schema in the DPDD, we have developed the updated database schema (as a pull-request in Felis/YAML format to the \url{https://github.com/lsst/cat} package). A human-friendly visualization of the new schema is available at \url{http://ls.st/j7f}.
+An easily maintainable human-friendly versions of the new schema is maintained at \url{http://ls.st/j7f}. Based on this spreadsheet, we have developed the updated database schema in the Felis/YAML format (delivered as a pull-request in Felis/YAML format to the \url{https://github.com/lsst/cat} package), as well as generated the \LaTeX{} tables in the DPDD.
+
+The DPDD representation, followed by the Felis/YAML representation (which contains additional detail) are considered canonical (i.e., defining the baseline).
 
 \subsection{LSE-61: DM Systems Requirements}
 
@@ -286,6 +294,8 @@ LDM-151 has been updated to:
 	\item Define the new pipeline tasks
 	\item Provide the inputs, outputs, and specification of individual pipeline tasks
 	\item Clarify that the DRP Solar System data products involve reprocessing of the prompt products, but also generation of a separate catalog constructed out of LSST observations only.
+	\item Specify failure modes and recovery options for individual pipeline component
+	\item Specify the interface to the Database (PPDB and/or L2DB) will largely be file based, with the SSP maintaining an internal spatially indexed database.
 \end{itemize}
 
 \subsection{LDM-156: Moving Object Pipeline System Design}
@@ -294,25 +304,27 @@ Having adopted HelioLINC as the algorithm, this document is to be taken out of t
 
 \subsection{Annual Milestones}
 
+The implementation of this change request will incorporate the milestones enumerated below into LSST's integrated PMCS. The plans will be refined on a cycle-by-cycle basis, consistent with usual LSST-DM practice. A more detailed notional schedule is kept locally in a PMCS tool.
+
 	\begin{tabular}{ p{1.5in}p{4.5in} } 
 		\hline
 		Date & Milestone \\
 		\hline
 		\hline
-		Dec 31st, 2019 & Moving object linking (based on Heliolinc) running at design spec, tested on LSST simulation. \\ 
-		Dec 31st, 2020 & MPC integration (Submission of discoveries to MPC; Retrieval of updated MPCORB -- the Minor Planet Center report submission pipelines). \\
-		              & Ephemeris cache precomputation pipeline delivered \\
-		              & Attribution service delivered \\
-		              & Initial DM Prompt Processing pipeline integration \\
+		Dec 31st, 2019 & Moving object linking (based on Heliolinc), tested on LSST simulation. \\ 
+		Dec 31st, 2020 & Moving object linking (based on Heliolinc), running at design spec, tested on LSST simulation. \\ 
+			       & MPC integration (Submission of discoveries to MPC; Retrieval of updated MPCORB -- the Minor Planet Center report submission pipelines). \\
+		               & Ephemeris cache precomputation pipeline delivered \\
+		               & Attribution service delivered \\
 		Dec 31st, 2021 & Daily Data Products Pipeline delivered. \\
-		              & Completion of DM Prompt Processing pipeline integration \\
-		              & Regular processing of commissioning data \\
+		               & Prompt Processing pipeline integration \\
 		Sep 31st, 2022 & DRP-specific pipeline elements delivered \\
-		              & Final construction version of Solar System Pipelines \\
+		               & Regular processing of commissioning data \\
+		               & Final construction version of Solar System Pipelines \\
 		\hline
 	\end{tabular}
 
-The implementation of this change request will incorporate the above milestones into LSST's integrated PMCS. The plans will be refined on a cycle-by-cycle basis, consistent with usual LSST-DM practice. A more detailed notional schedule is kept locally in a PMCS tool.
+The presented re-baseline has been developed under the following high-level guidance: keep the cost fixed (at approximately 1.5 FTE/yr through the end of construction), keep the schedule for final delivery fixed (end of construction), and attempt to minimally affect the scope. The resulting plan and schedule should therefore be considered success oriented and with no built-in margins. We are particularly exposed to external third party risks (the MPC), but also internal integration risks (e.g., the delivery of the attribution service at the end of 2020 depends on the readiness of the prompt processing system to receive it). We caution that any unforeseen issues and/or delays are likely to result in a slip of DRP-specific functionality into YR1 of operations.
 
 \subsection{Supplementary Documentation}
 
